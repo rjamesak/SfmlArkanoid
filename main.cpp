@@ -40,9 +40,9 @@ int main()
 	//make textures for sprites and background
 	sf::Texture texBG, texBlueBlock, texRedBlock, texGreenBlock, texBall, texPaddle;
 	texBG.loadFromFile("img/Background-4.png");
-	texBlueBlock.loadFromFile("img/blue_button01.png");
+	texBlueBlock.loadFromFile("img/element_blue_rectangle_glossy.png");
 	texRedBlock.loadFromFile("img/element_red_rectangle_glossy.png");
-	texGreenBlock.loadFromFile("green_Button01.png");
+	texGreenBlock.loadFromFile("img/element_green_rectangle_glossy.png");
 	texBall.loadFromFile("ballBlue.png");
 	texPaddle.loadFromFile("paddleBlu.png");
 	float ballWidth = 22.f;
@@ -67,7 +67,13 @@ int main()
 	int loopCount = 0;
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 10; j++) {
-			blockArr[loopCount].setTexture(texRedBlock);
+			if (j % 4 == 0) {
+				blockArr[loopCount].setTexture(texBlueBlock);
+			}
+			else {
+				//blockArr[loopCount].setTexture(texGreenBlock);
+				blockArr[loopCount].setTexture(texRedBlock);
+			}
 			//block img is 64 x 32
 			blockArr[loopCount].setPosition(i * 64.f + 80.f, j * 32.f + 10.f);
 			loopCount++;
@@ -139,13 +145,19 @@ int main()
 			sf::Vector2f leftVec(-8.f, 0);
 			sf::Vector2f rightVec(8.f, 0);
 
-			//move paddle left
+			//----------------MOVE PADDLE ----------//
+			//move paddle left with keyboard
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
 				sPaddle.move(leftVec);
 			}
-			//move paddle right
+			//move paddle right with keyboard
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
 				sPaddle.move(rightVec);
+			}
+			//move paddle with mouse
+			if (sf::Mouse::getPosition(window).x > 0 && sf::Mouse::getPosition(window).x < 800) {
+				window.setMouseCursorVisible(false);
+				sPaddle.setPosition(sf::Mouse::getPosition(window).x, windowVec.y - 24);
 			}
 
 			//check paddle collision
